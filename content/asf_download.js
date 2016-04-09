@@ -36,8 +36,63 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 		matching_folders: new Array(),
 		current_uri: "", // FF7.0.1 use a new per uri saved folder.
 		current_uri_lastpath: "", // last stored path for that uri
+		e10s: false, // Electrolysis firefox 40+ https://wiki.mozilla.org/Electrolysis
+		MM_MessageData: {}, // e10s Message Manager received data
+		
 		
 	main: function () {
+	
+		var prefManager = automatic_save_folder.prefManager;
+		
+		// Load Window and tab elements from the current active browser.
+		var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+						   .getService(Components.interfaces.nsIWindowMediator);
+		var mainWindow = wm.getMostRecentWindow("navigator:browser");
+		var currentTab = mainWindow.gBrowser.getBrowserAtIndex(mainWindow.gBrowser.tabContainer.selectedIndex);
+		
+		this.e10s  		= prefManager.getBoolPref("browser.tabs.remote.autostart");
+		if (this.e10s) // e10s compatible browser
+		{
+				var browserMM = currentTab.messageManager;
+				//let browserMM = mainWindow.gBrowser.selectedBrowser.messageManager;
+				browserMM.loadFrameScript("chrome://asf/content/frame-script.js", false);
+				browserMM.addMessageListener("asf@mangaheart.org:page-info-loaded", this.MM_ReceiveMessage); // add event listener to continue execution when data is retreived
+				browserMM.sendAsyncMessage("asf@mangaheart.org:get-page-info"); // trigger listening event in frame-script
+		}
+		else
+		{
+			this.check_filters();
+		}
+	},
+	
+	MM_ReceiveMessage: function (message) {
+		
+		// Remove message listener
+		var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+						   .getService(Components.interfaces.nsIWindowMediator);
+		var mainWindow = wm.getMostRecentWindow("navigator:browser");
+		var currentTab = mainWindow.gBrowser.getBrowserAtIndex(mainWindow.gBrowser.tabContainer.selectedIndex);
+		
+		
+		//let browserMM = mainWindow.gBrowser.selectedBrowser.messageManager;
+		let browserMM = currentTab.messageManager;
+		//browserMM.removeMessageListener("asf@mangaheart.org:get-page-info", getPageInfo);
+		browserMM.sendAsyncMessage("asf@mangaheart.org:remove-event-listener"); // trigger listening event remover
+		
+		
+		
+		// Save received message to ASF global for future use
+		console.log("ASF:message triggered");
+		automatic_save_folder.MM_MessageData = message.data;
+		//automatic_save_folder.console_print(automatic_save_folder.MM_MessageData.pageURL);
+		//automatic_save_folder.console_print(automatic_save_folder.MM_MessageData.pageReferrer);
+		
+		// check filters
+		automatic_save_folder.check_filters();
+	},
+	
+	
+	check_filters: function () {
 
 
 		// Setting private variables usable in this function
@@ -104,11 +159,22 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 		
 		/* load the domain and the filename of the saved file (copy the data from the firefox saving window and from the last active tab) */	
 		// var tabLocation = currentTab.currentURI.spec;
+	//this.e10s  		= prefManager.getBoolPref("browser.tabs.remote.autostart");
+	if(this.e10s)
+	{	
+		var tabLocation = this.MM_MessageData.pageLocation;
+		var currentReferrer = this.MM_MessageData.pageReferrer;
+	}	
+	else
+	{
 		var tabLocation = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.location;
+		var currentReferrer = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.referrer;
+	}
+
 		var tabURL = mainWindow.gURLBar.value;
 		var tabGroupName = this.getActiveGroupName();
-		var currentReferrer = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.referrer;
-			
+
+		
 		var filename = 			document.getElementById("location").value ;
 		
 		var domain = 			document.getElementById("source").value ;
@@ -133,15 +199,15 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 		
 		var domain_testOrder = prefManager.getCharPref("extensions.asf.domainTestOrder");
 		if (this.trim(domain_testOrder) == "") domain_testOrder = "1,5";
-		var message = "These data will be used to verify the filters :\n"+
-							"Filename:\t\t"+filename+"\nDomain test order:\t"+domain_testOrder+"\n"+
-							"1 - File's domain:\t"+domain+"\n"+
-							"2 - File's URL:\t\t"+fileURL+"\n"+
-							"3 - Full file's URL:\t"+fileURLAndFilename+"\n"+
-							"4 - Page's domain:\t"+currentDomain+"\n"+
-							"5 - Page's URL:\t\t"+currentURL+"\n"+
-							"6 - Page's referrer:\t"+currentReferrer+"\n"+
-							"7 - Tab's URL content:\t"+tabURL+"\n"+
+		var message = "These data will be used to verify the filters :\r\n"+
+							"Filename:\t\t"+filename+"\nDomain test order:\t"+domain_testOrder+"\r\n"+
+							"1 - File's domain:\t"+domain+"\r\n"+
+							"2 - File's URL:\t\t"+fileURL+"\r\n"+
+							"3 - Full file's URL:\t"+fileURLAndFilename+"\r\n"+
+							"4 - Page's domain:\t"+currentDomain+"\r\n"+
+							"5 - Page's URL:\t\t"+currentURL+"\r\n"+
+							"6 - Page's referrer:\t"+currentReferrer+"\r\n"+
+							"7 - Tab's URL content:\t"+tabURL+"\r\n"+
 							"8 - Tab's group name:\t"+tabGroupName;
 		if (!this.inPrivateBrowsing) this.console_print(message);
 		// debug : show the full downloaded link  http://abc.xyz/def/file.ext
@@ -588,10 +654,22 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 		
 		var currentTab = mainWindow.gBrowser.getBrowserAtIndex(mainWindow.gBrowser.tabContainer.selectedIndex);
 		// var tabLocation = currentTab.currentURI.spec;
+		
+	if(this.e10s)
+	{	
+		var tabLocation = this.MM_MessageData.pageLocation;
+		var currentReferrer = this.MM_MessageData.pageReferrer;
+	}	
+	else
+	{
 		var tabLocation = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.location;
+		var currentReferrer = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.referrer;
+	}
+
+	//	var tabLocation = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.location;
 		var tabURL = mainWindow.gURLBar.value;
 		var tabGroupName = this.getActiveGroupName();
-		var currentReferrer = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.referrer;
+	//	var currentReferrer = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.referrer;
 		
 		var filename =			document.getElementById("location").value ;
 		var file_name =			filename.replace (/\.(?!.*\.).*$/i, "");  // Trim from the last dot to the end of the file = remove extension
@@ -969,7 +1047,12 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 		//now, if the user checked the option to view asf on saving window, set it to visible
 		if(asf_viewdloption == true)
 		{
-			if(asf_viewdloptionType == 0) asf_dloptions.style.visibility = "visible";
+
+			if(asf_viewdloptionType == 0) 
+			{
+				asf_dloptions.style.visibility = "visible";
+				document.getElementById('asf_dloptions_content').style.visibility = "visible";
+			}
 			
 			if(asf_viewdloptionType == 1)
 			{
@@ -1008,6 +1091,7 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 			// Set the max width to the size of the screen minus 200px. Added for Mac OSX users with long path choice.
 			// alert("first screen : " + screen.width + "x" + screen.height);
 			asf_dloptions.style.maxWidth = screen.width -200 +"px";
+			
 		}
 	},
 	
@@ -1042,7 +1126,7 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 			dTa = this.prefManager.getBoolPref("extensions.asf.dta_ASFtoDTA_isActive") && (document.getElementById("downthemall").selected || document.getElementById("turbodta").selected);
 		}
 		
-		// Workaround for bug 439323 (if call when not needed, dosen't work anymore)
+		// Workaround for bug 439323 (if call when not needed, doesn't work anymore)
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=439323
 		var initialState = document.getElementById('asf_dloptions_content').style.visibility ;
 		
@@ -1085,6 +1169,7 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 			if ( (initialState != document.getElementById('asf_dloptions_content').style.visibility) && (FirstTime != true) ) // FirstTime is also a workaround of sizeToContent bug (which is called onLoad uCT)
 			{
 				window.sizeToContent();
+				console.log("ASF:window resize");
 			}
 		}
 	},
@@ -1548,7 +1633,7 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 	console_print : function (aMessage) {
 		var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
                                  .getService(Components.interfaces.nsIConsoleService);
-		consoleService.logStringMessage("Automatic Save Folder : \n" + aMessage);
+		consoleService.logStringMessage("Automatic Save Folder : <br> </br>\r" + aMessage);
 	},
 };
 

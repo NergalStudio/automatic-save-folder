@@ -119,7 +119,7 @@ var automatic_save_folder = {
 			var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
 							   .getService(Components.interfaces.nsIWindowMediator);
 			var mainWindow = wm.getMostRecentWindow("navigator:browser");
-			
+						
 			// Check if the user is in PrivateBrowsing mode.
 			if (this.versionChecker.compare(this.appInfo.version, "3.5") >= 0)// nsIPrivateBrowsingService supported from FF3.5 to FF20
 			{
@@ -157,7 +157,7 @@ var automatic_save_folder = {
 						this.inPrivateBrowsing = false;
 					}
 				}
-				
+							
 				Components.utils.import("resource://gre/modules/DownloadLastDir.jsm");
 				
 				// since 2012-07-21 gDownloadLastDir uses a per-window privacy status instead of global service. (https://bugzilla.mozilla.org/show_bug.cgi?id=722995 ; https://hg.mozilla.org/mozilla-central/rev/03cd2ad254cc)
@@ -169,7 +169,7 @@ var automatic_save_folder = {
 					gDownloadLastDir = new downloadModule.DownloadLastDir(mainWindow); // Load gDownloadLastDir for the active window
 				}
 			}
-			
+				
 			var tabURL = mainWindow.gURLBar.value;
 			var tabGroupName = this.getActiveGroupName();
 			var currentReferrer = mainWindow.gBrowser.mCurrentTab.linkedBrowser.contentDocument.referrer;

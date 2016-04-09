@@ -6,6 +6,7 @@
 		<em:name>Automatic Save Folder</em:name>
 		<em:version>1.0.5b129</em:version>
 		<em:type>2</em:type>
+		<em:multiprocessCompatible>true</em:multiprocessCompatible>
 		
 		<em:localized>
 			<Description>
@@ -100,7 +101,7 @@
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- firefox -->
 				<em:minVersion>1.5</em:minVersion>
-				<em:maxVersion>43.*</em:maxVersion>
+				<em:maxVersion>48.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 	</Description>
