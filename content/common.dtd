@@ -1,7 +1,7 @@
 <!-- Strings which don't need a translation -->
 
 <!-- Current version -->
-<!ENTITY asf.version "1.0.5bRev128">
+<!ENTITY asf.version "1.0.5bRev129">
 
 <!ENTITY about.translators "
 - cs : Stanislav Horáček<br />

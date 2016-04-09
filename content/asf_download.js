@@ -55,26 +55,50 @@ Copyright (C) 2007-2012 Éric Cassar (Cyan).
 		// Check if the user is in PrivateBrowsing mode.
 		if (this.versionChecker.compare(this.appInfo.version, "3.5") >= 0)// nsIPrivateBrowsingService supported from FF3.5 to FF20
 		{
-			try
+			
+			// Firefox 3.5 to 20.x
+			if(this.versionChecker.compare(this.appInfo.version, "21.0") < 0)
 			{
 				var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]
 									.getService(Components.interfaces.nsIPrivateBrowsingService);
-				this.inPrivateBrowsing = pbs.privateBrowsingEnabled;
+				this.inPrivateBrowsing = pbs.privateBrowsingEnabled;						
 			}
-			catch(e) // FF21+
+			
+			// Firefox 21 to 31
+			if(this.versionChecker.compare(this.appInfo.version, "21.0") >= 0 &&
+				this.versionChecker.compare(this.appInfo.version, "32.0") < 0)
 			{
 				this.inPrivateBrowsing = mainWindow.gBrowser.docShell.QueryInterface(Components.interfaces.nsILoadContext).usePrivateBrowsing;
 			}
 			
-			// Enable Private Browsing support with filepicker - Thanks to Ehsan Akhgari at http://ehsanakhgari.org/
+			// Firefox 32 and newer (tested up to 43)
+			if(this.versionChecker.compare(this.appInfo.version, "32.0") >= 0)
+			{
+				try
+				{
+					var PBU = {};
+					Components.utils.import("resource://gre/modules/PrivateBrowsingUtils.jsm", PBU);
+				
+					if (PBU.PrivateBrowsingUtils.isWindowPrivate(window)) 
+					{
+						this.inPrivateBrowsing = true;
+					}
+				}
+				catch(e)
+				{
+					this.inPrivateBrowsing = false;
+				}
+			}
+			
 			Components.utils.import("resource://gre/modules/DownloadLastDir.jsm");
 			
-			// since 2012-07-21, it uses a per-window privacy status instead of global service. (https://bugzilla.mozilla.org/show_bug.cgi?id=722995 ; https://hg.mozilla.org/mozilla-central/rev/03cd2ad254cc)
+			// since 2012-07-21 gDownloadLastDir uses a per-window privacy status instead of global service. (https://bugzilla.mozilla.org/show_bug.cgi?id=722995 ; https://hg.mozilla.org/mozilla-central/rev/03cd2ad254cc)
 			if (typeof(gDownloadLastDir) != "object")
 			{
+				var gDownloadLastDir = {}; // Create the gDownloadLastDir object because it doesn't exist
 				var downloadModule = {};
 				Components.utils.import("resource://gre/modules/DownloadLastDir.jsm", downloadModule);
-				gDownloadLastDir = new downloadModule.DownloadLastDir(mainWindow); // Load gDownloadLastDir for the active window 
+				gDownloadLastDir = new downloadModule.DownloadLastDir(mainWindow); // Load gDownloadLastDir for the active window
 			}
 		}
 		

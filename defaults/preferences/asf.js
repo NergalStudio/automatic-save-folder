@@ -1,4 +1,4 @@
-﻿ pref("extensions.asf.currentVersion", "1.0.5bRev128");
+﻿ pref("extensions.asf.currentVersion", "1.0.5bRev129");
  pref("extensions.asf.lastdir", true);
  pref("extensions.asf.keeptemp", true);
  pref("extensions.asf.viewdloption", false);
