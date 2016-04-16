@@ -9,7 +9,8 @@ This branch is my current progress.
 It's only to show you what I did so far.
 
 # progress and issues
-- It works with normal download and right-click download.
+- It works with normal download (left-click)
+- It doesn't work with right-click download yet.
 - It doesn't work with add/edit filter windows.
 - It requires frame script to be removed after every run or it will duplicate itself. (Firefox 48 bug?)
 - There's currently no way to detect if e10s is possible on Firefox. 
