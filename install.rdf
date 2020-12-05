@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
  xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>asf@mangaheart.org</em:id>
-		<em:name>Automatic Save Folder</em:name>
-		<em:version>1.0.5b129</em:version>
+		<em:id>https://github.com/NergalStudio/automatic-save-folder</em:id>
+		<em:name>Automatic Save Folder (palemoon compatibility)</em:name>
+		<em:version>1.0.5.1b129</em:version>
 		<em:type>2</em:type>
 		
 		<em:localized>
@@ -12,7 +12,7 @@
 				<em:locale>fr</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>Sélectionne automatiquement le dossier d'enregistrement suivant le nom du fichier et le site d'hébergement.</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -20,7 +20,7 @@
 				<em:locale>cs</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>Automaticky vybere cílovou složku pro stahování podle názvu souboru a domény.</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -28,7 +28,7 @@
 				<em:locale>de</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>Wählt automatisch den Zielordner für Ihren Download basierend auf Dateiname und Domain.</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -36,7 +36,7 @@
 				<em:locale>en</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>Automatically select the destination folder for your download, matching the filename and domain.</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -44,7 +44,7 @@
 				<em:locale>es-ES</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>Selecciona automáticamente la carpetas de destino para tus descargas, según nombres de archivo y dominio.</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURLhttps://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -52,7 +52,7 @@
 				<em:locale>it</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>Seleziona automaticamente la cartella di destinazione dei tuoi download, in base al nome del file e dominio.</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -60,7 +60,7 @@
 				<em:locale>ru</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>Автоматически выбирает папку для сохранения загружаемого файла по имени или домену.</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -68,7 +68,7 @@
 				<em:locale>sv-SE</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>Väljer automatiskt målmappen för din nerladdning genom att matcha filnamn och domän.</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -76,12 +76,12 @@
 				<em:locale>zh-TW</em:locale>
 				<em:name>Automatic Save Folder</em:name>
 				<em:description>在你下載時，當檔名與網域符合條件時，自動選擇目的資料夾。</em:description>
-				<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+				<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 			</Description>
 		</em:localized>
 		
 		<em:description>Automatically select the destination folder for your download, matching the filename and domain.</em:description>
-		<em:homepageURL>http://asf.mangaheart.org</em:homepageURL>
+		<em:homepageURL>https://github.com/NergalStudio/automatic-save-folder</em:homepageURL>
 		
 		<em:creator>Cyan</em:creator>
 		<em:translator>Cyan (fr, en-US)</em:translator>
